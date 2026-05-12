@@ -9,7 +9,8 @@ const socketHandler = (io) => {
     socket.join("general");
 
     socket.on("message:send", (message) => {
-      console.log(message);
+      if (!message?.text || !message?.username) return;
+
       const newMessage = {
         id: uuidv4(),
         text: message.text,
@@ -23,19 +24,11 @@ const socketHandler = (io) => {
     });
 
     socket.on("typing:start", (username) => {
-      try {
-        socket.brodcast.emit("typing:start", username);
-      } catch (err) {
-        console.log(`Error ${err}`);
-      }
+      socket.broadcast.emit("typing:start", username);
     });
 
     socket.on("typing:stop", () => {
-      try {
-        socket.brodcast.emit("typing:stop");
-      } catch (err) {
-        console.log(err);
-      }
+      socket.broadcast.emit("typing:stop");
     });
 
     socket.on("disconnect", () => {

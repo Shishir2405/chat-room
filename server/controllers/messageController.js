@@ -1,9 +1,9 @@
-const message = require("../data/message");
+const messages = require("../data/message");
 
 const getMessage = (req, res) => {
-  const limit = Number(20);
+  const limit = Number(req.query.limit) || 20;
 
-  res.json(message.slice(limit));
+  res.json(messages.slice(-limit));
 };
 
 module.exports = {
